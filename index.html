@@ -8,23 +8,35 @@
         body {
             font-family: Arial, sans-serif;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        li {
-            background: #f0f0f0;
-            margin: 5px 0;
+        th, td {
             padding: 10px;
             border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            cursor: pointer;
+        }
+        th:hover {
+            background-color: #f1f1f1;
         }
     </style>
 </head>
 <body>
     <h1>CSV Data Display</h1>
-    <ul id="csv-data-list">
-        <!-- CSV data will be injected here -->
-    </ul>
+    <table id="csv-data-table">
+        <thead>
+            <tr id="csv-header-row">
+                <!-- Header will be injected here -->
+            </tr>
+        </thead>
+        <tbody id="csv-data-body">
+            <!-- CSV data will be injected here -->
+        </tbody>
+    </table>
 
     <script src="script.js"></script>
 </body>
