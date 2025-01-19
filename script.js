@@ -25,13 +25,17 @@ function displayJSONData(jsonArray) {
         return;
     }
     jsonArray.forEach((item) => {
-        const tr = document.createElement('tr');
-        Object.values(item.Data).forEach(cell => {
-            const td = document.createElement('td');
-            td.textContent = cell;
-            tr.appendChild(td);
-        });
-        tableBody.appendChild(tr);
+        if (item.Data) {
+            const tr = document.createElement('tr');
+            Object.values(item.Data).forEach(cell => {
+                const td = document.createElement('td');
+                td.textContent = cell;
+                tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+        } else {
+            console.warn('Skipping item with null or undefined Data property', item);
+        }
     });
 }
 
@@ -57,7 +61,7 @@ function sortTableByColumn(columnIndex) {
 document.addEventListener('DOMContentLoaded', async () => {
     const jsonFilePath = 'data.json'; // Adjust the path to your JSON file
     const jsonData = await fetchJSON(jsonFilePath);
-    const jsonArray = jsonData.map(item => item.Data);
+    const jsonArray = jsonData.map(item => item.Data).filter(data => data);
 
     if (jsonArray.length > 0) {
         createTableHeader(Object.keys(jsonArray[0]));
