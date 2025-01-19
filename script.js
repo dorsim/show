@@ -18,16 +18,17 @@ function createTableHeader(headers) {
     });
 }
 
-function displayJSONData(jsonArray) {
+function displayJSONData(jsonArray) { 
     const tableBody = document.getElementById('json-data-body');
     if (!tableBody) {
         console.error('Table body element not found');
         return;
     }
     jsonArray.forEach((item) => {
-        if (item && item.Data) {
+        console.log(item)
+        if (item){ // && item.Data) {
             const tr = document.createElement('tr');
-            Object.values(item.Data).forEach(cell => {
+            Object.values(item).forEach(cell => {
                 const td = document.createElement('td');
                 td.textContent = cell;
                 tr.appendChild(td);
