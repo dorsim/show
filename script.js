@@ -25,7 +25,7 @@ function displayJSONData(jsonArray) {
         return;
     }
     jsonArray.forEach((item) => {
-        if (item.Data) {
+        if (item && item.Data) {
             const tr = document.createElement('tr');
             Object.values(item.Data).forEach(cell => {
                 const td = document.createElement('td');
@@ -60,11 +60,15 @@ function sortTableByColumn(columnIndex) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     const jsonFilePath = 'data.json'; // Adjust the path to your JSON file
-    const jsonData = await fetchJSON(jsonFilePath);
-    const jsonArray = jsonData.map(item => item.Data).filter(data => data);
+    try {
+        const jsonData = await fetchJSON(jsonFilePath);
+        const jsonArray = jsonData.map(item => item.Data).filter(data => data);
 
-    if (jsonArray.length > 0) {
-        createTableHeader(Object.keys(jsonArray[0]));
-        displayJSONData(jsonArray);
+        if (jsonArray.length > 0) {
+            createTableHeader(Object.keys(jsonArray[0]));
+            displayJSONData(jsonArray);
+        }
+    } catch (error) {
+        console.error('Failed to fetch or process JSON data:', error);
     }
 });
