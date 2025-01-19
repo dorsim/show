@@ -1,16 +1,15 @@
-async function fetchCSV(filePath) {
+async function fetchJSON(filePath) {
     const response = await fetch(filePath);
-    const data = await response.text();
+    const data = await response.json();
     return data;
 }
 
-function csvToArray(csv, delimiter = ',') {
-    const rows = csv.trim().split('\n');
-    return rows.map(row => row.split(delimiter));
-}
-
 function createTableHeader(headers) {
-    const headerRow = document.getElementById('csv-header-row');
+    const headerRow = document.getElementById('json-header-row');
+    if (!headerRow) {
+        console.error('Header row element not found');
+        return;
+    }
     headers.forEach((header, index) => {
         const th = document.createElement('th');
         th.textContent = header;
@@ -19,11 +18,15 @@ function createTableHeader(headers) {
     });
 }
 
-function displayCSVData(csvArray) {
-    const tableBody = document.getElementById('csv-data-body');
-    csvArray.forEach((row, rowIndex) => {
+function displayJSONData(jsonArray) {
+    const tableBody = document.getElementById('json-data-body');
+    if (!tableBody) {
+        console.error('Table body element not found');
+        return;
+    }
+    jsonArray.forEach((item) => {
         const tr = document.createElement('tr');
-        row.forEach(cell => {
+        Object.values(item.Data).forEach(cell => {
             const td = document.createElement('td');
             td.textContent = cell;
             tr.appendChild(td);
@@ -33,7 +36,7 @@ function displayCSVData(csvArray) {
 }
 
 function sortTableByColumn(columnIndex) {
-    const table = document.getElementById('csv-data-table');
+    const table = document.getElementById('json-data-table');
     const rows = Array.from(table.rows).slice(1); // Exclude the header row
     const isAscending = table.rows[0].cells[columnIndex].classList.toggle('asc', !table.rows[0].cells[columnIndex].classList.contains('asc'));
 
@@ -52,12 +55,12 @@ function sortTableByColumn(columnIndex) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const csvFilePath = 'data.csv'; // Adjust the path to your CSV file
-    const csvData = await fetchCSV(csvFilePath);
-    const csvArray = csvToArray(csvData);
+    const jsonFilePath = 'data.json'; // Adjust the path to your JSON file
+    const jsonData = await fetchJSON(jsonFilePath);
+    const jsonArray = jsonData.map(item => item.Data);
 
-    if (csvArray.length > 0) {
-        createTableHeader(csvArray[0]);
-        displayCSVData(csvArray.slice(1));
+    if (jsonArray.length > 0) {
+        createTableHeader(Object.keys(jsonArray[0]));
+        displayJSONData(jsonArray);
     }
 });
