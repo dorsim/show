@@ -23,14 +23,27 @@
         th:hover {
             background-color: #f1f1f1;
         }
+        #search-input {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: calc(100% - 12px);
+        }
+        .filter-input {
+            margin-top: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
-    <h1>Full list of</h1>
+    <h1>רשימת משוחררים ינואר 2025</h1>
     <table id="json-data-table">
         <thead>
             <tr id="json-header-row">
                 <!-- Header will be injected here -->
+            </tr>
+            <tr id="filter-row">
+                <!-- Filter inputs will be injected here -->
             </tr>
         </thead>
         <tbody id="json-data-body">
